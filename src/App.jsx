@@ -8,7 +8,7 @@ import Notfound from './pages/Notfound'
 import { getEmotionImage } from './util/getEmotionImage'
 import Header from './components/Header'
 import Button from './components/Button'
-import { act, useReducer, useRef } from 'react'
+import { useReducer, useRef } from 'react'
 
 const mockData = [{
   id: 1,
