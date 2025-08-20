@@ -5,7 +5,8 @@ import Edit from './pages/Edit'
 import Home from './pages/Home'
 import New from './pages/New'
 import Notfound from './pages/Notfound'
-import { createContext, useEffect, useReducer, useRef } from 'react'
+import { createContext, useEffect, useReducer, useRef, useState } from 'react'
+
 
 const mockData = [{
   id: 1,
@@ -44,6 +45,21 @@ export const DiaryDispatchContext = createContext()
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData)
   const idRef = useRef(4)
+  const [dark, setDark] = useState(false)
+  useEffect(() => {
+    const rootElement = document.getElementById('root');
+
+    if (dark) {
+      document.body.classList.add('dark')
+      rootElement?.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+      rootElement?.classList.remove('dark')
+    }
+  }, [dark])
+  const darkbtn = () => {
+    setDark(!dark)
+  }
 
   useEffect(() => {
     dispatch({
@@ -75,6 +91,7 @@ function App() {
     <div>
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider value={{ onCreate, onUdate, onDelete }}>
+          <button className='darkmode' onClick={darkbtn}>{dark ? '☀️' : '🌙'}</button>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/new' element={<New />} />
@@ -84,7 +101,7 @@ function App() {
           </Routes>
         </DiaryDispatchContext.Provider>
       </DiaryStateContext.Provider>
-    </div>
+    </div >
   )
 }
 
