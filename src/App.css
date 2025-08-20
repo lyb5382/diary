@@ -8,3 +8,7 @@ body.dark, #root.dark {
   background-color: rgb(29, 29, 29);
   box-shadow: rgba(100, 100, 100, 0.2) 0px 0px 29px 0px;
 }
+
+.Header.dark {
+  color: white;
+}
