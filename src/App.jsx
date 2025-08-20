@@ -14,12 +14,12 @@ const mockData = [{
   content: "1번 내용"
 }, {
   id: 2,
-  createdDate: new Date('2025-07-05').getTime(),
+  createdDate: new Date('2025-08-05').getTime(),
   emotionId: 2,
   content: "2번 내용"
 }, {
   id: 3,
-  createdDate: new Date('2025-01-05').getTime(),
+  createdDate: new Date('2025-08-01').getTime(),
   emotionId: 3,
   content: "3번 내용"
 }]

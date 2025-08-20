@@ -2,11 +2,13 @@ import React from 'react'
 import './DiaryItem.css'
 import { getEmotionImage } from '../util/getEmotionImage'
 import Button from './Button'
+import { useNavigate } from 'react-router-dom'
 
 const DiaryItem = ({ id, createdDate, emotionId, content }) => {
+    const nav = useNavigate()
     return (
         <div className='DiaryItem'>
-            <div className={`img-section bg-${emotionId}`}>
+            <div className={`img-section bg-${emotionId}`} onClick={() => nav(`/diary/${id}`)}>
                 <img src={getEmotionImage(emotionId)} alt="emotion icon" />
             </div>
             <div className="info-section">
@@ -14,7 +16,7 @@ const DiaryItem = ({ id, createdDate, emotionId, content }) => {
                 <div className="content">{content}</div>
             </div>
             <div className="button-section">
-                <Button text={'수정'} />
+                <Button text={'수정'} onClick={() => nav(`/edit/${id}`)} />
             </div>
         </div>
     )
