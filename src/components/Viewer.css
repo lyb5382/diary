@@ -1,0 +1,35 @@
+.Viewer>section {
+    text-align: center;
+    align-items: center;
+    margin-bottom: 100px;
+    padding-top: 100px;
+}
+
+.Viewer>section h4 {
+    font-size: 22px;
+}
+
+.emotion-img-wrap {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.content-section {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.content-section p {
+    min-height: 100px;
+    padding: 20px;
+    font-size: 20px;
+}

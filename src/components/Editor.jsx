@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Editor.css'
 import Button from './Button'
 import EmotionItem from './EmotionItem'
@@ -12,13 +12,31 @@ const emotionList = [
     { emotionId: 5, emotionName: "끔찍함" }
 ]
 
-const Editor = ({ onSubmit }) => {
+const getStringDate = (todate) => {
+    let year = todate.getFullYear()
+    let month = todate.getMonth() + 1
+    let date = todate.getDate()
+    if (month < 10) {
+        month = `0${month}`
+    }
+    if (date < 10) {
+        date = `0${date}`
+    }
+    return `${year}-${month}-${date}`
+}
+
+const Editor = ({ onSubmit, initData }) => {
     const nav = useNavigate()
     const [input, setInput] = useState({
         createdDate: new Date(),
         emotionId: 1,
         content: ''
     })
+    useEffect(() => {
+        if (initData) {
+            setInput({ ...initData, createdDate: new Date(Number(initData.createdDate)) })
+        }
+    }, [initData])
     const changeInput = (e) => {
         let name = e.target.name
         let value = e.target.value
@@ -38,7 +56,7 @@ const Editor = ({ onSubmit }) => {
         <div className='Editor'>
             <section className="date-section">
                 <h4>오늘 날짜</h4>
-                <input type="date" name='createdDate' onChange={changeInput} />
+                <input type="date" name='createdDate' onChange={changeInput} value={getStringDate(input.createdDate)} />
                 <section className="emtion-section">
                     {emotionList.map((i) => (<EmotionItem key={i.emotionId} {...i} isSelected={i.emotionId == input.emotionId} onClick={() => changeInput({ target: { name: 'emotionId', value: i.emotionId } })} />))}
                 </section>
@@ -47,7 +65,7 @@ const Editor = ({ onSubmit }) => {
                     <textarea placeholder='오늘의 일기' value={input.content} name='content' onChange={changeInput}></textarea>
                     <section className="button-section">
                         <Button text={'취소'} onClick={() => nav(-1)} />
-                        <Button text={'완성'} type={'POSITIVE'} onClick={submitButton}/>
+                        <Button text={'완성'} type={'POSITIVE'} onClick={submitButton} />
                     </section>
                 </section>
             </section>

@@ -2,6 +2,7 @@
     border: none;
     background-color: rgba(240, 248, 255, 0);
     font-size: 30px;
+    cursor: pointer;
 }
 
 body.dark, #root.dark {

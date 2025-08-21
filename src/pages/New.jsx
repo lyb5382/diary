@@ -13,13 +13,13 @@ const New = () => {
     onCreate(
       input.createdDate.getTime(),
       input.emotionId,
-      input.emotionName
+      input.content
     )
     nav('/', { replace: true })
   }
   return (
     <div>
-      <Header title={'새 일기 작성'} leftChild={<Button text={'←'} />} />
+      <Header title={'새 일기 작성'} leftChild={<Button text={'<'} onClick={() => nav(-1)} />} />
       <Editor onSubmit={onSubmit} />
     </div>
   )

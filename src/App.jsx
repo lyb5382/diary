@@ -41,6 +41,7 @@ function reducer(state, action) {
 }
 export const DiaryStateContext = createContext()
 export const DiaryDispatchContext = createContext()
+export const ThemeContext = createContext()
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData)
@@ -48,7 +49,6 @@ function App() {
   const [dark, setDark] = useState(false)
   useEffect(() => {
     const rootElement = document.getElementById('root');
-
     if (dark) {
       document.body.classList.add('dark')
       rootElement?.classList.add('dark')
@@ -74,7 +74,7 @@ function App() {
       data: { id: idRef.current++, createdDate, emotionId, content }
     })
   }
-  const onUdate = (id, createdDate, emotionId, content) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: 'UPDATE',
       data: { id, createdDate, emotionId, content }
@@ -89,18 +89,20 @@ function App() {
 
   return (
     <div>
-      <DiaryStateContext.Provider value={data}>
-        <DiaryDispatchContext.Provider value={{ onCreate, onUdate, onDelete }}>
-          <button className='darkmode' onClick={darkbtn}>{dark ? '☀️' : '🌙'}</button>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/new' element={<New />} />
-            <Route path='/edit/:id' element={<Edit />} />
-            <Route path='/diary/:id' element={<Diary />} />
-            <Route path='*' element={<Notfound />} />
-          </Routes>
-        </DiaryDispatchContext.Provider>
-      </DiaryStateContext.Provider>
+      <ThemeContext.Provider value={{ dark }}>
+        <DiaryStateContext.Provider value={data}>
+          <DiaryDispatchContext.Provider value={{ onCreate, onUpdate, onDelete }}>
+            <button className='darkmode' onClick={darkbtn}>{dark ? '☀️' : '🌙'}</button>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/new' element={<New />} />
+              <Route path='/edit/:id' element={<Edit />} />
+              <Route path='/diary/:id' element={<Diary />} />
+              <Route path='*' element={<Notfound />} />
+            </Routes>
+          </DiaryDispatchContext.Provider>
+        </DiaryStateContext.Provider>
+      </ThemeContext.Provider>
     </div >
   )
 }

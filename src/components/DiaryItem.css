@@ -16,6 +16,10 @@
     cursor: pointer;
 }
 
+.info-section.dark {
+    color: whitesmoke;
+}
+
 .img-section img {
     width: 50%;
 }
