@@ -5,12 +5,13 @@ import Header from '../components/Header'
 import Button from '../components/Button'
 import { DiaryDispatchContext } from '../App'
 import useDiary from '../hook/useDiary'
+import useTitle from '../hook/useTitle'
 
 const Edit = () => {
     const nav = useNavigate()
     const params = useParams()
     const { onDelete, onUpdate } = useContext(DiaryDispatchContext)
-    const curDiary = useDiary(params.id)
+    const curDiary = useDiary(params.id,{redirectOnMissing:false})
     const onSubmit = (i) => {
         if (window.confirm('수정 완료?')) {
             onUpdate(params.id, i.createdDate.getTime(), i.emotionId, i.content)

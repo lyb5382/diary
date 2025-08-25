@@ -7,46 +7,34 @@ import New from './pages/New'
 import Notfound from './pages/Notfound'
 import { createContext, useEffect, useReducer, useRef, useState } from 'react'
 
-
-const mockData = [{
-  id: 1,
-  createdDate: new Date('2025-08-17').getTime(),
-  emotionId: 1,
-  content: "1번 내용"
-}, {
-  id: 2,
-  createdDate: new Date('2025-08-05').getTime(),
-  emotionId: 2,
-  content: "2번 내용"
-}, {
-  id: 3,
-  createdDate: new Date('2025-08-01').getTime(),
-  emotionId: 3,
-  content: "3번 내용"
-}]
-
 function reducer(state, action) {
+  let nextState;
   switch (action.type) {
     case 'INTI':
       return action.data
     case 'CREATE':
       return [action.data, ...state]
     case 'UPDATE':
-      return state.map((item) => String(item.id) === String(action.data.id) ? action.data : item)
+      nextState = state.map((item) => String(item.id) === String(action.data.id) ? action.data : item)
+      break;
     case 'DELETE':
-      return state.filter((item) => String(item.id) !== String(action.id))
+      nextState = state.filter((item) => String(item.id) !== String(action.id))
+      break;
     default:
       return state
   }
+  localStorage.setItem('diary', JSON.stringify(nextState))
+  return nextState
 }
 export const DiaryStateContext = createContext()
 export const DiaryDispatchContext = createContext()
 export const ThemeContext = createContext()
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, mockData)
-  const idRef = useRef(4)
-  const [dark, setDark] = useState(false)
+  const [data, dispatch] = useReducer(reducer, [])
+  const idRef = useRef(0)
+  const [loading, setLoading] = useState(true)
+  const [dark, setDark] = useState(true)
   useEffect(() => {
     const rootElement = document.getElementById('root');
     if (dark) {
@@ -62,10 +50,35 @@ function App() {
   }
 
   useEffect(() => {
-    dispatch({
-      type: 'INIT',
-      data: mockData
+    const storedData = localStorage.getItem('diary')
+    if (!storedData) {
+      localStorage.setItem('diary', JSON.stringify([]))
+      setLoading(false)
+      return
+    }
+    let parsed = []
+    try {
+      parsed = JSON.parse(storedData)
+    } catch {
+      localStorage.setItem('diary', JSON.stringify([]))
+      return
+    }
+    if (!Array.isArray(parsed)) {
+      setLoading(false)
+      return
+    }
+    let maxId = 0;
+    parsed.forEach((item) => {
+      if (Number(item.id) > maxId) {
+        maxId = item.id
+      }
     })
+    idRef.current = maxId + 1
+    dispatch({
+      type: "INIT",
+      data: parsed
+    })
+    setLoading(false)
   }, [])
 
   const onCreate = (createdDate, emotionId, content) => {

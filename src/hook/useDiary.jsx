@@ -2,19 +2,22 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { DiaryStateContext } from '../App'
 
-const useDiary = () => {
+const useDiary = (id, { redirectOnMissing = true } = {}) => {
     const nav = useNavigate()
     const data = useContext(DiaryStateContext)
-    const { id } = useParams()
     const [curDiary, setCurDiary] = useState(null)
     useEffect(() => {
-        const currentDiaryItem = data.find((i) => String(i.id) === String(id))
-        if (!currentDiaryItem) {
-            window.alert('존재하지 않음')
-        } else {
-            setCurDiary(currentDiaryItem)
+        const curDiary = data.find((i) => String(i.id) === String(id))
+        if (!curDiary) {
+            if (redirectOnMissing) {
+                window.alert("존재하지 않는 일기 입니다.")
+                nav("/", { replace: true })
+            }
+            setCurDiary(null)
+            return
         }
-    }, [id, data, nav])
+        setCurDiary(curDiary)
+    }, [id, data, nav, redirectOnMissing])
     return curDiary
 }
 
